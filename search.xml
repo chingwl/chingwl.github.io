@@ -3,6 +3,31 @@
   
     
     <entry>
+      <title>阿里云OSS挂载到服务器</title>
+      <link href="/2021/08/29/Z3KBzHVmrctmg3lW/"/>
+      <url>/2021/08/29/Z3KBzHVmrctmg3lW/</url>
+      
+        <content type="html"><![CDATA[<p><a href="https://help.aliyun.com/document_detail/32196.html" target="_blank" rel="noopener">ecs服务器挂载ossfs官方教程</a></p><h1 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h1><p>获取用户AccessKey :</p><p>登录阿里云OSS控制台，获取用户AccessKey：<br>AccessKeyID：xxxxxxxxxxxxxxxx<br>AccessKeySecret：xxxxxxxxxxxxxxxx</p><a id="more"></a><h1 id="Ubuntu"><a href="#Ubuntu" class="headerlink" title="Ubuntu"></a>Ubuntu</h1><h2 id="在服务器创建ossfs密码文件"><a href="#在服务器创建ossfs密码文件" class="headerlink" title="在服务器创建ossfs密码文件"></a>在服务器创建ossfs密码文件</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo oss-jwl-bj:AccessKeyID:AccessKeySecret &gt; /etc/passwd-ossfs  </span><br><span class="line">chmod 640 /etc/passwd-ossfs</span><br></pre></td></tr></table></figure></div><h2 id="将Bucket挂载到指定目录"><a href="#将Bucket挂载到指定目录" class="headerlink" title="将Bucket挂载到指定目录"></a>将Bucket挂载到指定目录</h2><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir /ossfs/bj/</span><br><span class="line">-- 内网  </span><br><span class="line">ossfs oss-jwl-bj /ossfs/bj/ -ourl=oss-cn-beijing-internal.aliyuncs.com -oallow_other -ononempty</span><br><span class="line">-- 外网  </span><br><span class="line">ossfs oss-jwl-bj /ossfs/bj/ -ourl=oss-cn-beijing.aliyuncs.com -oallow_other -ononempty</span><br></pre></td></tr></table></figure></div><h2 id="设置OSS开机自动挂载"><a href="#设置OSS开机自动挂载" class="headerlink" title="设置OSS开机自动挂载"></a>设置OSS开机自动挂载</h2><p>将上面的命令添加到以下文件中<br><code>vim /etc/rc.local</code></p><p>重启服务器测试oss是否开机挂载<br><code>df -h</code></p><h2 id="卸载硬盘"><a href="#卸载硬盘" class="headerlink" title="卸载硬盘"></a>卸载硬盘</h2><p><code>fusermount -u /ossfs/bj</code></p><hr><h1 id="macOS"><a href="#macOS" class="headerlink" title="macOS"></a>macOS</h1><h2 id="安装s3fs"><a href="#安装s3fs" class="headerlink" title="安装s3fs"></a>安装s3fs</h2><blockquote><p>(阿里云提供了ossfs，但是不支持mac</p></blockquote><div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install --cask macfuse</span><br><span class="line">brew install gromgit/fuse/s3fs-mac</span><br></pre></td></tr></table></figure></div><h2 id="创建-passwd-s3fs"><a href="#创建-passwd-s3fs" class="headerlink" title="创建~/.passwd-s3fs"></a>创建~/.passwd-s3fs</h2><p>内容格式如下:<br><code>[backet]:[AppID]:[AppSecret]</code></p><p>设置文件权限:<br><code>chmod 600 ~/.passwd-s3fs</code></p><h2 id="创建本地文件夹"><a href="#创建本地文件夹" class="headerlink" title="创建本地文件夹"></a>创建本地文件夹</h2><p><code>mkdir ~/oss</code></p><h2 id="挂载"><a href="#挂载" class="headerlink" title="挂载"></a>挂载</h2><p><code>s3fs [bucket-id] ~/oss -o url=https://oss-cn-beijing.aliyuncs.com -o passwd_file=~/.passwd-s3fs -o use_cache=/tmp</code></p><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>可以像本地文件一样将文件放入~/oss即可。</p><hr><h1 id="相关链接🔗"><a href="#相关链接🔗" class="headerlink" title="相关链接🔗"></a>相关链接🔗</h1><p><a href="https://www.dplor.com/node/369" target="_blank" rel="noopener">阿里云OSS挂载到本地MacOS</a><br><a href="https://wanjun.pro/2019/08/08/macOS%E6%8C%82%E8%BD%BD%E9%98%BF%E9%87%8C%E4%BA%91OSS/" target="_blank" rel="noopener">macOS挂载阿里云OSS</a><br><a href="https://github.com/s3fs-fuse/s3fs-fuse" target="_blank" rel="noopener">s3fs fuse</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 阿里云 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 阿里云 </tag>
+            
+            <tag> OSS </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>【shell】日期处理</title>
       <link href="/2021/01/28/shell/%E3%80%90shell%E3%80%91%E6%97%A5%E6%9C%9F%E5%A4%84%E7%90%86/"/>
       <url>/2021/01/28/shell/%E3%80%90shell%E3%80%91%E6%97%A5%E6%9C%9F%E5%A4%84%E7%90%86/</url>
